@@ -6,6 +6,8 @@ import login from "assets/img/bg.svg";
 import img from "assets/img/about.svg";
 import avatar from "assets/img/avatar.svg";
 import { NavLink } from "react-router-dom";
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'
 import "assets/css/style.css";
 import {
     Button,
@@ -32,6 +34,10 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [error, setError] = useState('');
     const [errors, setErrors] = useState({});
+    function validateEmail(email) {
+      const re = /\S+@\S+\.\S+/;
+      return re.test(email);
+    }
     const validate = () => {
         let errors = {};
         if (!email.trim()) {
@@ -43,6 +49,11 @@ const Login = () => {
       
         if (!password.trim()) {
           errors.password= "Password is required";
+        }
+        if (!validateEmail(email)) {
+          errors.email= "Invalid email";
+          // setError('Invalid email');
+          
         }
       
         return errors;
@@ -70,18 +81,21 @@ const Login = () => {
               })
                   .then(response => {
                     if (response.data.error) {
-                      setError('Could not creat the account.Please try again');
-                      alert(error);
+                      console.log(response.data.error)
+                      setError(response.data.error);
+                      // alert(error);
+                      // toast.error(error);
                     } else {
                       
                     //   setLoggedIn(true);
                     //   setUser(response.data);
                       console.log(response)
+                      toast.success('Account created successfully!');
                       history.push('/login');
                      
                       // set the cookie
-                      alert(response.data.message);
-                      
+                      // alert(response.data.message);
+                     
                     }
                     
                    
@@ -96,6 +110,7 @@ const Login = () => {
 
     return (
         <>
+           <ToastContainer />
            <img class="wave" src={about}/>
             <div class="maincontainer">
                     <div class="image">
@@ -136,11 +151,12 @@ const Login = () => {
                             </div>
                             </div>
                             {errors.password && <div className="text-danger">{errors.password}</div>}
+                            {error&& <div className="text-danger">{error}</div>}
                             <input type="submit" class="loginbtn" value="SignUp"/>
                         </Form>
                     </div>
             </div>
-
+    
         </>
     )
 }

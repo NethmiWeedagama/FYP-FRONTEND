@@ -4,11 +4,7 @@ import React from 'react';
 // import "bootstrap/js/src/collapse";
 // import "bootstrap/js/src/dropdown";
 import { Switch, Route, Redirect } from 'react-router-dom'
-// import Home from './Components/Home'
-// import About from './Components/About'
-// import Contact from './Components/Contact'
-// import Services from './Components/Services'
-// import Navbar from './Components/Navbar'
+
 import Navbar from "components/Navbars/Navbar.js";
 import Home from "views/Home.js";
 import About from "views/About.js";

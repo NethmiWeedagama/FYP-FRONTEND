@@ -3,7 +3,7 @@ import Dashboard from "views/Dashboard.js";
 import AddIssue from "views/AddIssue.js";
 
 
-// import TableList from "views/Tables.js";
+
 
 import UserPage from "views/User.js";
 

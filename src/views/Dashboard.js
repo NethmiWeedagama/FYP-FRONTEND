@@ -55,9 +55,7 @@ function Dashboard() {
   const [error, setError] = useState('');
   const [data, setData] = useState([]);
  
-  const submitTeamName = () => {
-    setVisible(!visible);
-  }
+
   const reset = () => {
     setVisible(!visible);
   }
@@ -183,43 +181,13 @@ function Dashboard() {
    
     console.log(severityValues)
     var total = data.length;
-    // for (var i = 0; i < priorityCountArray.length; i++) {
-    //   total += priorityCountArray[i].value;
-    // }
-    var percentageMinor = (minor/ total) * 100;
-    var percentageTrival = (trivial/ total) * 100;
-    var percentageCritical = (critical/ total) * 100;
-    var percentageMajor= (major/ total) * 100;
-    var percentageBlocker = (blocker/ total) * 100;
-    var percentageNormal = (normal/ total) * 100;
-    var percentageEnhancement = (enhancement/ total) * 100;
-
-    const priorityWeightings = [
-      { priority: "High", weighting: 50 },
-      { priority: "Medium", weighting: 30 },
-      { priority: "Low", weighting: 20 }
-    ];
-    const highWeighting = priorityWeightings.find(p => p.priority === "High").weighting;
-    const mediumWeighting = priorityWeightings.find(p => p.priority === "Medium").weighting;
-    const lowWeighting = priorityWeightings.find(p => p.priority === "Low").weighting;
-    const highPercentage = (high / total) * highWeighting;
-    const mediumPercentage = (medium/ total) * mediumWeighting;
-    const lowPercentage = (low / total) * lowWeighting;
-    var percentageHigh= (high/ total) * 100;
-    var percentageMedium= (medium/ total) * 100;
-    var percentageLow = (low/ total) * 100;
+    
     const [filteredData, setFilteredData] = useState(data);
     const tableRef = useRef(null);
     const handleFilterUpdate = (filteredData) => {
       setFilteredData(filteredData);
     };
-    
-    const tableToExcel = (tableId, filename) => {
-      ReactHtmlTableToExcel.renderExcel({
-        tableId: tableId,
-        filename: filename,
-      });
-    }
+
   
     // Create an object to count occurrences of each combination of severity and priority
     const counts = {};
@@ -250,12 +218,8 @@ function Dashboard() {
       const priority = item.priority;
       table[severity][priority]++;
     }
-    // Add percentage to each data point
-    // for (var i = 0; i < priorityCountArray.length; i++) {
-    //   var percentage = (priorityCountArray[i].value / total) * 100;
-    //   priorityCountArray[i].percentage = percentage.toFixed(2) + '%';
-    // }
-    const severityPieChart  = {
+   
+    const severityBarChart  = {
       data: (canvas) => {
         return {
          
@@ -317,32 +281,7 @@ function Dashboard() {
           }
         },
      
-        // pieceLabel: {
-        //   render: "percentage",
-        //   fontColor: ['white', 'white', 'white', 'white', 'white','white'],
-        //   precision: 2
-        // },
-        // scales: {
-        //   y: {
-        //     ticks: {
-        //       display: false
-        //     },
-        //     grid: {
-        //       drawBorder: false,
-        //       display: false
-        //     }
-        //   },
-        //   x: {
-        //     barPercentage: 1.6,
-        //     grid: {
-        //       drawBorder: false,
-        //       display: false
-        //     },
-        //     ticks: {
-        //       display: false
-        //     }
-        //   }
-        // }
+       
         indexAxis: 'x',
           scales: {
             y: {
@@ -361,7 +300,7 @@ function Dashboard() {
           }
       }
     };
-    const priorityPieChart  = {
+    const priorityBarChart  = {
       data: (canvas) => {
         return {
          
@@ -421,29 +360,7 @@ function Dashboard() {
             },
           }
         },
-        // plugins: {
-        //   legend: { 
-        //     labels:{
-        //       font:{size:15}
-        //     },
-        //     display: false
-        //   },
-        //   tooltip: {
-        //     callbacks: {
-        //       // label: function (tooltipItem, data) {
-        //       //   var dataset = data.datasets[tooltipItem.datasetIndex];
-        //       //   var value = dataset.data[tooltipItem.index];
-        //       //   var label = data.labels[tooltipItem.index];
-        //       //   var percentage = data.datasets[0]._meta[0].data[tooltipItem.index].$percentage.toFixed(2) + '%';
-        //       //   return label + ': ' + value + ' (' + percentage + ')';
-        //         // return '50%'
-        //         // var label = data.labels[tooltipItem.index];
-        //         // var value = data.datasets[0].data[tooltipItem.index];
-        //         // var total = data.datasets[0].data.reduce((a, b) => a + b, 0);
-        //         // var percentage = ((value / total) * 100).toFixed(2) + '%';
-        //         // return `${label}: ${value} (${percentage})`;
-        //       },
-        //     },
+        
        
           indexAxis: 'x',
           scales: {
@@ -468,99 +385,101 @@ function Dashboard() {
         // },
         },
       
-        // maintainAspectRatio: false,
-        // pieceLabel: {
-        //   render: "percentage",
-        //   fontColor: ['black', 'black', 'black'],
-        //   precision: 2
-        // },
-        // scales: {
-        //   y: {
-        //     ticks: {
-        //       display: false
-        //     },
-        //     grid: {
-        //       drawBorder: false,
-        //       display: false
-        //     }
-        //   },
-        //   x: {
-        //     barPercentage: 1.6,
-        //     grid: {
-        //       drawBorder: false,
-        //       display: false
-        //     },
-        //     ticks: {
-        //       display: false
-        //     }
-        //   }
-        // }
-      // }
+        
     };
    
       
       
-        const exportToPDF = () => {
-          // create a new jsPDF instance
-          const doc = new jsPDF();
-          doc.text("BUGCLASSIFIER SUMMARY REPORT",10,10);
-          const promises = [];
-          // add the first pie chart to the PDF
-          const chart1 = document.getElementById('chart1');
-          // promises.push(html2canvas(chart1).then(canvas => {
-            const chart1Dims = chart1.getBoundingClientRect();
-          //   doc.addImage(canvas.toDataURL("image/png"), "PNG", chart1Dims.x, chart1Dims.y, chart1Dims.width, chart1Dims.height);
-          // }));
 
-          // add the second pie chart to the PDF
-          const chart2 = document.getElementById('chart2');
-         
-          const headers = [["Bug Id", "Bug Title", "Bug Description", "Severity", "Priority"]];
+    const exportToPDF = () => {
+      // create a new jsPDF instance
+      const doc = new jsPDF();
+      doc.setFontSize(18); // set the font size
+      doc.setFont("helvetica", "bold"); // set the font type and weight
+      doc.text("BUGCLASSIFIER SUMMARY REPORT", 10, 10); // add the main title
+      doc.setFontSize(14); // set the font size for the subtitle
+      doc.setFont("helvetica", "normal"); // set the font type and weight for the subtitle
+      
+      doc.text("BUG Details Table",10,20);
+            const headers = [["Bug Id", "Bug Title", "Bug Description", "Severity", "Priority"]];
           const dataTable = data.map((row, index) => [index+1, row.title, row.description, row.severity, row.priority]);
 
           let content = {
             startY: 30,
             head: headers,
             body: dataTable,
+            columnWidth: [10, 40, 80, 20, 20] // set column widths
           };
 
           doc.autoTable(content);
-          // // save the PDF
-          // Promise.all(promises).then(() => {
-          //   doc.save("charts.pdf");
-          // });
-          html2canvas(chart1).then(canvas1 => {
-            html2canvas(chart2).then(canvas2 => {
-              const chart1Url = canvas1.toDataURL();
-              const chart2Url = canvas2.toDataURL();
-              doc.addImage(chart1Url, 'JPG', 10, doc.autoTable.previous.finalY + 20, 100, 100);
-              doc.addImage(chart2Url, 'JPG', 120, doc.autoTable.previous.finalY + 20, 100, 100);
-              // add a new line after the charts
-              // doc.text("")
-              const chartsHeight = canvas1.height + canvas2.height;
-              // add the two way table
-              const tableColumns = [''];
-              priorities.forEach((priority) => tableColumns.push(priority));
-              const tableData = severities.map((severity) => {
-                const row = [severity];
-                priorities.forEach((priority) => {
-                  row.push(`${table[severity][priority]}`);
-                });
-                return row;
-              });
+      const promises = [];
+      // add the first pie chart to the PDF
+      const chart1 = document.getElementById('chart1');
+      promises.push(html2canvas(chart1).then(canvas => {
+        const chart1Dims = chart1.getBoundingClientRect();
+        doc.addImage(canvas.toDataURL("image/png"), "PNG", chart1Dims.x, chart1Dims.y, chart1Dims.width, chart1Dims.height);
+      }));
+    
+      // add the second pie chart to the PDF
+      const chart2 = document.getElementById('chart2');
+      promises.push(html2canvas(chart2).then(canvas => {
+        const chart2Dims = chart2.getBoundingClientRect();
+        doc.addImage(canvas.toDataURL("image/png"), "PNG", chart2Dims.x, chart2Dims.y, chart2Dims.width, chart2Dims.height);
+      }));
+    
+      const chartMaxHeight = doc.internal.pageSize.height - doc.autoTable.previous.finalY - 40;
+      const tableEndPosY = doc.autoTableEndPosY();
+      html2canvas(chart1).then(canvas1 => {
+        html2canvas(chart2).then(canvas2 => {
+          const chart1Url = canvas1.toDataURL();
+          const chart2Url = canvas2.toDataURL();
+          const chart1Height = canvas1.height;
+          const chart2Height = canvas2.height;
+          // if (tableEndPosY + chart1Height +10>= doc.internal.pageSize.height) {
+          //   doc.addPage();
+          // }
+          const chartsHeight = canvas1.height + canvas2.height;
+          if (chartMaxHeight < chartsHeight) {
+           
           
-              doc.autoTable({
-                head: [tableColumns],
-                body: tableData,
-                startY: doc.autoTable.previous.finalY + chartsHeight + 20,
-              });
-              // doc.addImage(chart1Url, 'PNG', 10, 10, 100, 100);
-              // doc.addImage(chart2Url, 'PNG', 120, 10, 100, 100);
-              doc.save("BUGCLASSIFIER Report.pdf");
+            // add the charts to a new page
+            doc.addPage();
+            doc.setFontSize(14); // set the font size for the subtitle
+            doc.setFont("helvetica", "normal"); // set the font type and weight for the subtitle
+            doc.text("Statistics", 10, 20); // add the subtitle
+            doc.addImage(chart1Url, 'JPG', 10, 30, 100, 100);
+            doc.addImage(chart2Url, 'JPG', 120, 30, 100, 100);
+          }else{
+            doc.addImage(chart1Url, 'JPG', 10, doc.autoTable.previous.finalY + 20, 100, 100);
+            doc.addImage(chart2Url, 'JPG', 120, doc.autoTable.previous.finalY + 20, 100, 100);
+          }
+          
+          // add a new line after the charts
+          // doc.text("")
+          
+          // add the two way table
+          const tableColumns = [''];
+          priorities.forEach((priority) => tableColumns.push(priority));
+          const tableData = severities.map((severity) => {
+            const row = [severity];
+            priorities.forEach((priority) => {
+              row.push(`${table[severity][priority]}`);
             });
+            return row;
           });
-          // doc.save('report.pdf');
-        }
+      
+          doc.autoTable({
+            head: [tableColumns],
+            body: tableData,
+            startY: 150  ,
+          });
+          // save the PDF
+          Promise.all(promises).then(() => {
+            doc.save("BUGCLASSIFIER Report.pdf");
+          });
+        });
+      });
+    };
   return (
    
    
@@ -674,21 +593,7 @@ function Dashboard() {
                   <CardTitle tag="h4">Bug Reports</CardTitle>
                   </Col>
                   <Col md="2">
-                  {/* <li className="nav-item"></li> */}
-                  {/* <CardTitle className="text-right" tag="h6" onClick={reset}>Project Name</CardTitle> */}
                  
-                  {/* <DownloadTableExcel
-                    filename="users table"
-                    sheet="users"
-                    currentTableRef={tableRef.current}
-                  >
-                        <Button className="btn-sm " color="primary"
-                             
-                             
-                            >
-                             <i className="fa fa-file-export" /> Export 
-                        </Button>
-                  </DownloadTableExcel> */}
                   {/* <CSVLink data={data} filename={"report.csv"} target="_blank"> */}
                         <Button className="btn-sm " color="primary" onClick={exportToPDF}>
                               <i className="fa fa-file-export" /> Export 
@@ -800,8 +705,8 @@ function Dashboard() {
                 </CardHeader>
                 <CardBody style={{ height: "266px" }}>
                   <Bar
-                    data={severityPieChart.data}
-                    options={severityPieChart.options}
+                    data={severityBarChart.data}
+                    options={severityBarChart.options}
                   />
                 </CardBody>
                 <CardFooter>
@@ -830,8 +735,8 @@ function Dashboard() {
                 </CardHeader>
                 <CardBody style={{ height: "266px" }}>
                   <Bar
-                    data={priorityPieChart.data}
-                    options={priorityPieChart.options}
+                    data={priorityBarChart.data}
+                    options={priorityBarChart.options}
                   />
                 </CardBody>
                 <CardFooter>
@@ -885,27 +790,6 @@ function Dashboard() {
                         </thead>
                         <tbody>
                         
-                           
-                             {/* {data.map((row, i) => (
-                                <tr key={i}>
-                                  <td>{`S${i + 1}`}</td>
-                                  {row.map((val, j) => (
-                                    <td key={j}>{val}</td>
-                                  ))}
-                                  
-                                </tr>
-                              ))} */}
-                               {/* {severities.map(s => (
-                                <tr key={s}>
-                                  <td  className="text-primary" style={{ fontWeight: "bold" }}>{s}</td>
-                                  {priorities.map(p => (
-                                    <td key={p}>{counts[s][p] || 0}</td>
-                                    // <td key={p}>{ (counts[s][p]/ total) * 100|| 0}</td>
-                                  ))}
-
-                                 
-                                </tr>
-                              ))} */}
                               {severities.map(severity => (
                                 <tr key={severity}>
                                   <th>{severity}</th>

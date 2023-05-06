@@ -118,7 +118,7 @@ const Login = () => {
         <>
            <img className="wave" src={about}/>
             <div className="maincontainer">
-                    <div class="image">
+                    <div className="image">
                         <img className="image" src={login}/>
                     </div>
                     <div className="login-content">

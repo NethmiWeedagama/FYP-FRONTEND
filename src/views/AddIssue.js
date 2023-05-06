@@ -101,18 +101,7 @@ function AddIssue() {
       {visible  && 
         <Row>
           <Col md="12">
-            {/* <Card>
-              <CardHeader>Google Maps</CardHeader>
-              <CardBody>
-                <div
-                  id="map"
-                  className="map"
-                  style={{ position: "relative", overflow: "hidden" }}
-                >
-                  <MapWrapper />
-                </div>
-              </CardBody>
-            </Card> */}
+           
             
             <Card className="card-user">
               <CardHeader>
@@ -134,21 +123,7 @@ function AddIssue() {
                         />
                       </FormGroup>
                     </Col>
-                    {/* <Col className="px-1" md="5">
-                      <FormGroup>
-                      
-   
-                        <label>Project Name</label>
-                        <Input
-                        
-                          name="projectName" 
-                          placeholder="Project name"
-                          type="text"
-                          value={values.projectName}
-                          onChange={handleInputChange}
-                        />
-                      </FormGroup>
-                    </Col> */}
+                  
                    
                   </Row>
                   <Row>

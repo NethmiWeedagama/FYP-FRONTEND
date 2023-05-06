@@ -11,15 +11,7 @@ const Contact = () => {
         message: ""
     })
 
-    // const inputEvent = (e) => {
-    //     const { name, value } = e.target;
-    //     setData((preVal) => {
-    //         return {
-    //             ...preVal,
-    //             [name] : value,
-    //         }
-    //     });
-    // }
+    
  
     const handleInputChange = (e) => {
       const { name, value } = e.target;

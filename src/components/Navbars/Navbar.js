@@ -1,9 +1,24 @@
-import React from "react";
-
+// import React from "react";
+import React, { useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import {NavLink } from "react-router-dom"
 import logo from "logo.svg";
 import logoBug from"assets/img/bug-hosting.svg";
-const Navbar = () => {
+// import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/js/bootstrap.bundle";
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+ 
+ 
+} from "reactstrap";
+const MainNavbar = () => {
+  
+
   return (
     <>
       <div className=" nav_bg">
@@ -27,24 +42,24 @@ const Navbar = () => {
                   BugClassifier
                 </a>
               </div>
+             
                 {/* <NavLink  exact className="navbar-brand" to="/">
                   Company Name
                 </NavLink> */}
                 <button
                   className="navbar-toggler"
                   type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target="#navbarSupportedContent"
+                  data-toggle="collapse"
+                  data-target="#navbarSupportedContent"
                   aria-controls="navbarSupportedContent"
                   aria-expanded="false"
                   aria-label="Toggle navigation"
                 >
                   <span className="navbar-toggler-icon"></span>
                 </button>
-                <div
-                  className="collapse navbar-collapse"
-                  id="navbarSupportedContent"
-                >
+                
+                 
+                <div className="collapse navbar-collapse" id="navbarSupportedContent">
                   <ul className="mainNavbar navbar-nav ml-auto mb-2 mb-lg-0">
                     <li className="nav-item">
                       <NavLink activeClassName="menu_active"  exact
@@ -70,11 +85,7 @@ const Navbar = () => {
                         Help
                       </NavLink>
                     </li>
-                    {/* <li className="nav-item">
-                      <NavLink activeClassName="menu_active"  exact className="nav-link" to="/contact">
-                        Contact
-                      </NavLink>
-                    </li> */}
+                    
                     <li className="nav-item">
                       <NavLink activeClassName="menu_active"  exact className="nav-link" to="/login">
                         LogIn
@@ -87,6 +98,8 @@ const Navbar = () => {
                     </li>
                   </ul>
                 </div>
+               
+                
               </div>
             </nav>
           </div>
@@ -96,4 +109,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default MainNavbar;
